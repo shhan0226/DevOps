@@ -4,7 +4,8 @@
 ## MASTER - Network ##
 
 # calico 설치
-curl https://docs.projectcalico.org/manifests/canal.yaml -O
+#curl https://docs.projectcalico.org/manifests/canal.yaml -O
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.26.0/manifests/calico.yaml -O
 kubectl apply -f canal.yaml
 
 # MetalLB
@@ -51,7 +52,7 @@ kubectl get services
 ####################################################
 ## worker ##
 
-# join
+# join - sudo 계정으로 진행필요
 # kubeadm join 192.168.1.105:6443 --token 9j88w4.0jp50tqxz0ztz73v --discovery-token-ca-cert-hash sha256:c701f69f20587c3fa42ca8dc5eb59a83eb543e2c4656ab83132a22e2cd6c974e
 
 
