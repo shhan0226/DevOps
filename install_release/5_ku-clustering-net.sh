@@ -1,44 +1,7 @@
 #!/bin/bash
 
-##################################
-# Change root privileges.
-##################################
-IAMACCOUNT=$(whoami)
-echo "${IAMACCOUNT}"
-if [ "$IAMACCOUNT" = "root" ]; then
-    echo "It's root account."
-else
-    echo "It's not a root account."
-	exit 100
-fi
-
-
-####################################################
-## MASTER ##
-sudo rm /etc/containerd/config.toml
-sudo systemctl restart containerd
-
-# 클러스터 초기화
-# Flannel = 10.244.0.0/16
-# Calico = 192.168.0.0/16
-sudo kubeadm init --pod-network-cidr=192.168.0.0/16 \
- --control-plane-endpoint="192.168.1.105" --upload-certs
-
-# set
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-# root user 일 경우
-export KUBECONFIG=/etc/kubernetes/admin.conf
-
-kubectl get pods --all-namespaces
-kubectl get nodes -o wide
-
 ####################################################
 ## MASTER - Network ##
-
-
 
 # calico 설치
 curl https://docs.projectcalico.org/manifests/canal.yaml -O
@@ -89,18 +52,18 @@ kubectl get services
 ## worker ##
 
 # join
-kubeadm join 192.168.1.105:6443 --token 9j88w4.0jp50tqxz0ztz73v --discovery-token-ca-cert-hash sha256:c701f69f20587c3fa42ca8dc5eb59a83eb543e2c4656ab83132a22e2cd6c974e
+# kubeadm join 192.168.1.105:6443 --token 9j88w4.0jp50tqxz0ztz73v --discovery-token-ca-cert-hash sha256:c701f69f20587c3fa42ca8dc5eb59a83eb543e2c4656ab83132a22e2cd6c974e
 
 
 ####################################################
 ## 삭제 ##
 
 # 클러스터 삭제
-sudo kubeadm reset
+# sudo kubeadm reset
 
 # CNI 삭제
-sudo rm -rf /etc/cni/net.d/*
-sudo rm -rf ~/.kube/config
+#sudo rm -rf /etc/cni/net.d/*
+#sudo rm -rf ~/.kube/config
 
 # 서비스재시작
-sudo systemctl restart kubelet
+#sudo systemctl restart kubelet

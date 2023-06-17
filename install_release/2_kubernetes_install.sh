@@ -14,7 +14,6 @@ else
 fi
 
 
-
 # iptables 
 sudo cat /sys/class/dmi/id/product_uuid
 
