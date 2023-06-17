@@ -1,5 +1,20 @@
 #!/bin/bash
 
+
+##################################
+# Change root privileges.
+##################################
+IAMACCOUNT=$(whoami)
+echo "${IAMACCOUNT}"
+if [ "$IAMACCOUNT" = "root" ]; then
+    echo "It's root account."
+else
+    echo "It's not a root account."
+	exit 100
+fi
+
+
+
 # iptables 
 sudo cat /sys/class/dmi/id/product_uuid
 
@@ -20,11 +35,11 @@ sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-relea
 
 # 키 및 저장소 등록
 # ver.1
-sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-# ver.2
-#curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
+#sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 #echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+# ver.2
+curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 # kubelet, kubeadm, kubectl 설치
 sudo apt-get update
@@ -36,7 +51,7 @@ kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl
 source /etc/bash_completion.d/kubectl
 
 # kubeadm version
-kubectl version --short
+sudo kubectl version --short
 
 # (옵션) error 처리
 sudo rm /etc/containerd/config.toml

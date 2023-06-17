@@ -1,5 +1,17 @@
 #!/bin/bash
 
+##################################
+# Change root privileges.
+##################################
+IAMACCOUNT=$(whoami)
+echo "${IAMACCOUNT}"
+if [ "$IAMACCOUNT" = "root" ]; then
+    echo "It's root account."
+else
+    echo "It's not a root account."
+	exit 100
+fi
+
 # iptables 
 sudo cat /sys/class/dmi/id/product_uuid
 
