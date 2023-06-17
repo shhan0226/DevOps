@@ -1,6 +1,11 @@
 #!/bin/bash
 
 ## 쿠버네티스 초기화
+# [Clean up]
+#kubectl config delete-cluster
+# [Remove the node]
+#kubectl drain <node name> --delete-local-data --force --ignore-daemonsets
+# [reset]
 #kubeadm reset
 
 

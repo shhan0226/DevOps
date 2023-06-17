@@ -18,8 +18,11 @@ fi
 sudo rm /etc/containerd/config.toml
 sudo systemctl restart containerd
 
-# Calico
-sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --control-plane-endpoint="192.168.1.105" --upload-certs
+# 클러스터 초기화
+# Flannel = 10.244.0.0/16
+# Calico = 192.168.0.0/16
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16 \
+ --control-plane-endpoint="192.168.1.105" --upload-certs
 
 # set
 mkdir -p $HOME/.kube
@@ -31,6 +34,11 @@ export KUBECONFIG=/etc/kubernetes/admin.conf
 
 kubectl get pods --all-namespaces
 kubectl get nodes -o wide
+
+####################################################
+## MASTER - Network ##
+
+
 
 # calico 설치
 curl https://docs.projectcalico.org/manifests/canal.yaml -O
