@@ -1,5 +1,18 @@
 #!/bin/bash
 
+##################################
+# Change root privileges.
+##################################
+IAMACCOUNT=$(whoami)
+echo "${IAMACCOUNT}"
+if [ "$IAMACCOUNT" = "root" ]; then
+    echo "It's root account."
+else
+    echo "It's not a root account."
+	exit 100
+fi
+
+
 ####################################################
 ## MASTER ##
 sudo rm /etc/containerd/config.toml
@@ -14,12 +27,7 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # root user 일 경우
-# export KUBECONFIG=/etc/kubernetes/admin.conf
-
-# kubectl taint nodes --all node-role.kubernetes.io/master-
-# 안될경우
-# kubectl describe node <nodename> | grep Taints
-# kubectl taint node master node-role.kubernetes.io/master:NoSchedule-
+export KUBECONFIG=/etc/kubernetes/admin.conf
 
 kubectl get pods --all-namespaces
 kubectl get nodes -o wide
@@ -62,6 +70,12 @@ EOF
 
 kubectl apply -f metallb-config.yaml
 kubectl get services
+
+
+# kubectl taint nodes --all node-role.kubernetes.io/master-
+# 안될경우
+# kubectl describe node <nodename> | grep Taints
+# kubectl taint node master node-role.kubernetes.io/master:NoSchedule-
 
 ####################################################
 ## worker ##

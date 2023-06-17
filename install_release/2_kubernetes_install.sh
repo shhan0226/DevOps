@@ -54,5 +54,5 @@ source /etc/bash_completion.d/kubectl
 sudo kubectl version --short
 
 # (옵션) error 처리
-sudo rm /etc/containerd/config.toml
-sudo systemctl restart containerd
+#sudo rm /etc/containerd/config.toml
+#sudo systemctl restart containerd
