@@ -21,5 +21,5 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 # root user 일 경우
 # export KUBECONFIG=/etc/kubernetes/admin.conf
 
-#kubectl get pods --all-namespaces
-#kubectl get nodes -o wide
+kubectl get pods --all-namespaces
+kubectl get nodes -o wide
