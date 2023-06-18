@@ -10,6 +10,7 @@ sudo systemctl restart containerd
 # Calico = 192.168.0.0/16
 ip_=$(hostname -I | awk '{print $1}')
 echo $ip_
+
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16 \
  --control-plane-endpoint=$ip_ --upload-certs
 
