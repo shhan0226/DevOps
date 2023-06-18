@@ -3,15 +3,6 @@
 ####################################################
 ## MASTER - Network ##
 
-# calico 설치
-#curl https://docs.projectcalico.org/manifests/canal.yaml -O
-#kubectl apply -f canal.yaml
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.26.0/manifests/calico.yaml -O
-kubectl apply -f calico.yaml
-
-
-
-
 # MetalLB
 kubectl get configmap kube-proxy -n kube-system -o yaml | \
 sed -e "s/strictARP: false/strictARP: true/" | \
