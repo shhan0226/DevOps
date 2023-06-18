@@ -2,8 +2,6 @@
 
 ####################################################
 ## MASTER ##
-sudo rm /etc/containerd/config.toml
-sudo systemctl restart containerd
 
 # 클러스터 초기화
 # Flannel = 10.244.0.0/16

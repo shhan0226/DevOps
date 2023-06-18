@@ -17,8 +17,13 @@ kubectl get configmap kube-proxy -n kube-system -o yaml | \
 sed -e "s/strictARP: false/strictARP: true/" | \
 kubectl apply -f - -n kube-system
 
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml
+#kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
+curl https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml -O
+kubectl apply -f namespace.yaml
+
+#kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml
+curl https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml -O
+kubectl apply -f metallb.yaml
 
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
