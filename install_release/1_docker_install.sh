@@ -88,8 +88,10 @@ KVERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/la
 # docker-compose
 sudo apt-get update
 #sudo apt-get install -y docker-compose
+
 # docker-compose github 다운로드
 sudo curl -L https://github.com/docker/compose/releases/download/${KVERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+
 # docker-compose 권한 설정
 sudo chmod +x /usr/local/bin/docker-compose
 
