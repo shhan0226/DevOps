@@ -41,6 +41,13 @@ sudo apt-get install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING 
 sudo swapoff -a
 sudo sed -i "s/\/swap/\#\/swap/" /etc/fstab
 
+# WARNING: No swap limit support
+# grub update
+#sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=memory swapaccount=1\"/" /etc/default/grub
+#update-grub
+#shutdown -r now
+
+
 # systemd를 cgroup 변경
 touch daemon.json
 cat > daemon.json <<EOF
@@ -72,11 +79,6 @@ sudo systemctl enable docker
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 
-# WARNING: No swap limit support
-# grub update
-#sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=memory swapaccount=1\"/" /etc/default/grub
-#update-grub
-#shutdown -r now
 
 # 확인
 docker info | grep -i cgroup
