@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# root 관리자인지 확인
-# if [[ $EUID -ne 0 ]]; then
-#     echo "it's not root ..."
-#     exit 1
-# fi
+# 사용자로 실행하는지 확인
+if [[ $EUID -eq 0 ]]; then
+    echo "This script should not be run as root."
+    exit 1
+fi
 
 # 시스템의 IP 주소를 가져옴
 IP_ADDRESSES=$(hostname -I)
@@ -24,12 +24,3 @@ sudo kubeadm init --apiserver-advertise-address=${MASTER_IP_1} --pod-network-cid
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-# 홈 디렉토리 설정
-# echo "================"
-# echo "home user set..."
-# HOMEUSER=$(ls /home/.)
-# echo $HOMEUSER
-# mkdir -p /home/$HOMEUSER/.kube
-# sudo cp -i /etc/kubernetes/admin.conf /home/$HOMEUSER/.kube/config
-# sudo chown $HOMEUSER:$HOMEUSER /home/$HOMEUSER/.kube/config

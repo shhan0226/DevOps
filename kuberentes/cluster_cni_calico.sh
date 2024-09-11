@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# root 관리자인지 확인
-if [[ $EUID -ne 0 ]]; then
-    echo "it's not root ..."
+# 사용자로 실행하는지 확인
+if [[ $EUID -eq 0 ]]; then
+    echo "This script should not be run as root."
     exit 1
 fi
 
