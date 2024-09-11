@@ -7,5 +7,6 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # hostname 설정
-hostname1=node1
+hostname1="master1"
+echo ${hostname1}
 sudo hostnamectl set-hostname $hostname1
