@@ -12,6 +12,7 @@ IP_ADDRESSES=$(hostname -I)
 # 첫 번째 IP 주소만 추출
 # MASTER_IP_1=192.168.0.11
 MASTER_IP_1=$(echo $IP_ADDRESSES | awk '{print $1}')
+echo $MASTER_IP_1
 
 # CNI 주소 
 CNI_IP="10.244.0.0/16"
