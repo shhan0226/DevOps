@@ -40,4 +40,4 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 # kubectl 자동완성 활성화
 echo 'source <(kubectl completion bash)' >>~/.bashrc
-kubectl completion bash >/etc/bash_completion.d/kubectl
+source ~/.bashrc
