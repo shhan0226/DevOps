@@ -40,14 +40,16 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl bash-completion
 sudo apt-mark hold kubelet kubeadm kubectl bash-completion
 
-# (옵션) error 처리
+# auto 설정
 sudo rm /etc/containerd/config.toml
+sudo systemctl restart containerd
+kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl
+source /etc/bash_completion.d/kubectl
+
+# (옵션) error 처리
 sudo mkdir -p /etc/containerd
 containerd config default | sudo tee /etc/containerd/config.toml
 sudo sed -i 's/ SystemdCgroup = fasle/ SystemdCgroup = true/' /etc/containerd/config.toml
 sudo systemctl restart containerd
 
-# # auto 설정
-# kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl
-# source /etc/bash_completion.d/kubectl
 
