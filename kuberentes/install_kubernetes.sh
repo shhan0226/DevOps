@@ -38,7 +38,7 @@ sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list   # helps tools such as c
 # kubelet, kubeadm, kubectl 설치
 sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl bash-completion
-sudo apt-mark hold kubelet kubeadm kubectl bash-completion
+sudo apt-mark hold kubelet kubeadm kubectl
 
 # auto 설정
 sudo rm /etc/containerd/config.toml
