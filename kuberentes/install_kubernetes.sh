@@ -52,4 +52,3 @@ containerd config default | sudo tee /etc/containerd/config.toml
 sudo sed -i 's/ SystemdCgroup = fasle/ SystemdCgroup = true/' /etc/containerd/config.toml
 sudo systemctl restart containerd
 
-
