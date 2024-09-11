@@ -20,6 +20,8 @@ CNI_IP="10.244.0.0/16"
 kubeadm init --apiserver-advertise-address=${MASTER_IP_1} --pod-network-cidr=${CNI_IP} --control-plane-endpoint=${MASTER_IP_1} --upload-certs
 
 # 홈 디렉토리 설정
+echo "================"
+echo "home user set..."
 HOMEUSER=$(ls /home/.)
 echo $HOMEUSER
 mkdir -p /home/$HOMEUSER/.kube
