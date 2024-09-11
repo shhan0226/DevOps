@@ -80,6 +80,8 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker
 
 
+
+###############
 # 확인
 docker info | grep -i cgroup
 
