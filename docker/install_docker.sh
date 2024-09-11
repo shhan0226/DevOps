@@ -13,6 +13,8 @@ sudo apt-get install -y gnupg-agent
 sudo apt-get install -y software-properties-common
 sudo apt-get install -y gnupg2  
 sudo apt-get install -y lsb-release
+# jq library 설치
+sudo apt install jq -y
 
 # GPG key 등록
 sudo mkdir -p /etc/apt/keyrings
@@ -79,26 +81,22 @@ sudo systemctl enable docker
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 
-
-
-###############
-# 확인
-docker info | grep -i cgroup
-
-# jq library 설치
-sudo apt install jq -y
 # 최신버전 확인
-KVERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)
+COMVERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)
 
 # docker-compose
 sudo apt-get update
 #sudo apt-get install -y docker-compose
 
 # docker-compose github 다운로드
-sudo curl -L https://github.com/docker/compose/releases/download/${KVERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+sudo curl -L https://github.com/docker/compose/releases/download/${COMVERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 
 # docker-compose 권한 설정
 sudo chmod +x /usr/local/bin/docker-compose
+
+
+# 확인
+docker info | grep -i cgroup
 
 # 최신버전 확인
 docker-compose -v
