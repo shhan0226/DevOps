@@ -1,36 +1,33 @@
 # DevOps
 
 ## Overview
-Here is a script for configuring container environments(ARM arch) like Docker and Kubernetes.
+This script provides instructions for installing Docker and Kubernetes.
 
 
 ## Installation
 
-### 1. Docker
+### 1. configuration
 ```
-./install_release/1_docker_insdtall.sh
-```
-
-### 2. Kubernetes
-```
-./install_release/2_kuberentes_insdtall.sh
+cd ./env_config
+./hostname_set.sh
+./hosts_set.sh
+./swapoff_set.sh
 ```
 
-### 3. Kustomize
+### 2. Docker
 ```
-./kustomize/3_kustomize_install_arm.sh
-```
-
-### 4. minikube
-
-```
-./minikube/4_minikube_install_arm.sh
+cd ./docker
+./install_docker.sh
 ```
 
-### 5. Kubernetes Clustering
+### 3. Kubernetes
 ```
-./install_release/5_kubernetes-clustering.sh
-  ```
+cd ./Kubernetes
+./install_kubernetes.sh
+./install_kustomize.sh
+./cluster_init.sh
+./cluster_cni_calico.sh
+```
 
 
 
