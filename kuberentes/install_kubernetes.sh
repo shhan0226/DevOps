@@ -1,43 +1,65 @@
 #!/bin/bash
 
-# 사용자로 실행하는지 확인
-if [[ $EUID -eq 0 ]]; then
-    echo "This script should not be run as root."
-    exit 1
-fi
+# Load kernel modules
+echo "br_netfilter" > /etc/modules-load.d/k8s.conf
 
-# iptables 
-sudo cat /sys/class/dmi/id/product_uuid
-
-cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
-br_netfilter
-EOF
-
-cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+# Configure sysctl for Kubernetes
+cat <<EOF > /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
 EOF
 
-sudo sysctl --system
+# Update sysctl configuration
+sysctl --system
 
-# Containerd config 수정
-sudo mkdir -p /etc/containerd
-containerd config default | sudo tee /etc/containerd/config.toml
-sudo sed -i 's/ SystemdCgroup = fasle/ SystemdCgroup = true/' /etc/containerd/config.toml
-sudo systemctl restart containerd
+# Update package cache
+apt-get update
 
-# apt package
-sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+# Ensure /etc/apt/keyrings directory exists with correct permissions
+mkdir -p /etc/apt/keyrings
 
-# 키 및 저장소 등록
-sudo apt-get update
+# Remove kubernetes-archive-keyring.gpg
+rm -f /usr/share/keyrings/kubernetes-archive-keyring.gpg
+
+# Download Kubernetes APT keyring
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
-sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
-sudo apt-mark hold kubelet kubeadm kubectl
 
-# kubectl 자동완성 활성화
-echo 'source <(kubectl completion bash)' >>~/.bashrc
-source ~/.bashrc
+# Set permissions for kubernetes-apt-keyring.gpg
+chmod 0644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+# Add Kubernetes repository
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | tee /etc/apt/sources.list.d/kubernetes.list
+
+# Set permissions for the Kubernetes repository list
+chmod 0644 /etc/apt/sources.list.d/kubernetes.list
+
+# Update package cache
+apt-get update
+
+# Install required packages
+apt-get install -y --no-install-recommends kubelet kubeadm kubectl bash-completion
+
+# Hold package versions
+apt-mark hold kubelet kubeadm kubectl
+
+# Remove containerd configuration
+rm -f /etc/containerd/config.toml
+
+# Restart containerd
+systemctl restart containerd
+
+# Configure kubectl auto-completion
+kubectl completion bash > /etc/bash_completion.d/kubectl
+
+# Create /etc/containerd directory
+mkdir -p /etc/containerd
+
+# Generate default containerd config and save to /etc/containerd/config.toml
+containerd config default > /etc/containerd/config.toml
+
+# Update SystemdCgroup to true in /etc/containerd/config.toml
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+
+# Restart Containerd service
+systemctl restart containerd

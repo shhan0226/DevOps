@@ -7,6 +7,4 @@ if [[ $EUID -eq 0 ]]; then
 fi
 
 # CNI, calico 설치
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.28.1/manifests/calico.yaml -O
-kubectl apply -f calico.yaml
-
+curl -sSL https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml | kubectl apply -f -

@@ -9,6 +9,19 @@
 #kubeadm reset
 
 
+# 확인
+# kubectl cluster-info
+# kubectl get all --all-namespaces
+# kubectl get pods --all-namespaces
+# kubectl get pod -n kube-system
+# kubectl get nodes -o wide
+# sudo journalctl -u kubelet
+
+# 조회방법
+# kubectl describe pod <pod-name> -n kube-system
+# kubectl logs <pod-name>
+
+
 ## 쿠버네티스 && 도커 기동 중지
 sudo systemctl stop kubelet
 #sudo systemctl stop docker

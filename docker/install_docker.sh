@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# 사용자로 실행하는지 확인
+if [[ $EUID -eq 0 ]]; then
+    echo "This script should not be run as root."
+    exit 1
+fi
+
 export ACCOUNT=$(whoami)
 echo "$ACCOUNT ALL = (root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$ACCOUNT
 sudo chmod 0440 /etc/sudoers.d/$ACCOUNT
