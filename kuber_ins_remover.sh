@@ -12,6 +12,7 @@
 # 확인
 # kubectl cluster-info
 # kubectl get all --all-namespaces
+# watch -n 10 "kubectl get all --all-namespaces"
 # kubectl get pods --all-namespaces
 # kubectl get pod -n kube-system
 # kubectl get nodes -o wide

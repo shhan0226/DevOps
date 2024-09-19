@@ -28,6 +28,3 @@ cd ./Kubernetes
 ./cluster_init.sh
 ./cluster_cni_calico.sh
 ```
-
-
-
